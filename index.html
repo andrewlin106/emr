@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Pink Medical Passport</title>
+<style>
+:root{
+  --pink:#ff4f9a; --pink2:#ff8fc3; --pink3:#ffe4f0; --pink4:#fff7fb;
+  --text:#44243a; --muted:#8d667d; --white:#fff; --line:#f4c9dc;
+  --shadow:0 14px 35px rgba(184,61,120,.13);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",
+  "Noto Sans TC","Noto Sans KR","Noto Sans JP",sans-serif;
+  color:var(--text);background:linear-gradient(135deg,#fff7fb,#ffeaf4 45%,#fff);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:flex}
+.sidebar{
+  width:270px;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
+  border-right:1px solid var(--line);padding:24px 18px;position:fixed;
+  inset:0 auto 0 0;z-index:5;display:flex;flex-direction:column;
+}
+.logo{display:flex;align-items:center;gap:12px;margin:5px 8px 28px}
+.logo-icon{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--pink),#ffb2d2);
+display:grid;place-items:center;color:#fff;font-size:24px;box-shadow:0 8px 20px #ff76ae55}
+.logo strong{display:block;font-size:17px}.logo small{color:var(--muted)}
+.nav{display:grid;gap:8px}
+.nav button{
+  border:0;background:transparent;color:var(--muted);text-align:left;padding:13px 14px;
+  border-radius:13px;transition:.2s
+}
+.nav button:hover,.nav button.active{background:var(--pink3);color:#d92d78;font-weight:700}
+.side-bottom{margin-top:auto;font-size:12px;color:var(--muted);line-height:1.6;padding:12px}
+.main{margin-left:270px;width:calc(100% - 270px);padding:28px;max-width:1500px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
+.title h1{margin:0;font-size:28px}.title p{margin:5px 0 0;color:var(--muted)}
+.actions{display:flex;gap:10px;align-items:center}
+.select,.btn{
+  border:1px solid var(--line);background:#fff;padding:10px 13px;border-radius:12px;color:var(--text)
+}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff;font-weight:700}
+.btn:hover{transform:translateY(-1px)}
+.hero{
+  background:linear-gradient(110deg,#ff4f9a,#ff87bb 55%,#ffc5dc);color:#fff;
+  border-radius:24px;padding:24px;box-shadow:var(--shadow);margin-bottom:22px;
+  display:flex;justify-content:space-between;align-items:center;gap:20px
+}
+.hero h2{margin:0 0 7px;font-size:23px}.hero p{margin:0;opacity:.92}
+.badge{background:#ffffff2c;border:1px solid #ffffff55;padding:8px 12px;border-radius:999px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.card{
+  grid-column:span 6;background:rgba(255,255,255,.9);border:1px solid var(--line);
+  border-radius:20px;padding:20px;box-shadow:var(--shadow)
+}
+.card.full{grid-column:1/-1}.card.third{grid-column:span 4}
+.card h3{margin:0 0 16px;display:flex;align-items:center;gap:9px;font-size:17px}
+.icon{width:34px;height:34px;border-radius:11px;background:var(--pink3);display:grid;place-items:center}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700;color:#79556b}
+input,select,textarea{
+  width:100%;border:1px solid var(--line);border-radius:11px;background:#fffafa;
+  padding:11px 12px;color:var(--text);outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px #ff4f9a18}
+textarea{min-height:95px;resize:vertical}
+.help{font-size:11px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 10px;background:var(--pink3);border-radius:999px;font-size:12px}
+.section{display:none}.section.active{display:block}
+.footer-note{text-align:center;color:var(--muted);font-size:11px;padding:22px}
+.toast{
+  position:fixed;right:22px;bottom:22px;background:#432438;color:#fff;padding:12px 16px;
+  border-radius:12px;opacity:0;transform:translateY(10px);transition:.25s;z-index:20
+}.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:900px){
+  .sidebar{width:80px;padding:18px 10px}.logo-text,.nav span,.side-bottom{display:none}
+  .logo{justify-content:center}.nav button{text-align:center;font-size:20px}
+  .main{margin-left:80px;width:calc(100% - 80px);padding:18px}.card,.card.third{grid-column:1/-1}
+}
+@media(max-width:600px){
+  .topbar{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions>*{flex:1}
+  .hero{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+}
+@media print{
+  .sidebar,.actions,.footer-note{display:none!important}.main{margin:0;width:100%;padding:0}
+  body{background:#fff}.card{box-shadow:none;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">♡</div>
+      <div class="logo-text"><strong>Pink Medical</strong><small>Personal Health Passport</small></div>
+    </div>
+    <nav class="nav">
+      <button class="active" onclick="showSection('overview',this)">🏠 <span data-i18n="navOverview">總覽</span></button>
+      <button onclick="showSection('basic',this)">👤 <span data-i18n="navBasic">基本資料</span></button>
+      <button onclick="showSection('history',this)">🩺 <span data-i18n="navHistory">病史與過敏</span></button>
+      <button onclick="showSection('surgery',this)">🏥 <span data-i18n="navSurgery">手術史</span></button>
+      <button onclick="showSection('meds',this)">💊 <span data-i18n="navMeds">用藥史</span></button>
+      <button onclick="showSection('family',this)">👨‍👩‍👧 <span data-i18n="navFamily">家族史</span></button>
+      <button onclick="showSection('extra',this)">📋 <span data-i18n="navExtra">其他醫療資訊</span></button>
+    </nav>
+    <div class="side-bottom">🔒 <span data-i18n="privacy">資料只存在此頁面，除非你自行匯出或儲存。</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="title">
+        <h1 data-i18n="title">我的多國語言電子病歷</h1>
+        <p data-i18n="subtitle">一份可以隨身攜帶的 Personal Medical Passport</p>
+      </div>
+      <div class="actions">
+        <select id="language" class="select" onchange="changeLanguage(this.value)">
+          <option value="zh">🇹🇼 中文</option>
+          <option value="en">🇺🇸 English</option>
+          <option value="ko">🇰🇷 한국어</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+        </select>
+        <button class="btn" onclick="window.print()" data-i18n="print">🖨 列印</button>
+      </div>
+    </div>
+
+    <section id="overview" class="section active">
+      <div class="hero">
+        <div><h2 data-i18n="heroTitle">♡ Your Health, Your Story.</h2><p data-i18n="heroText">把重要醫療資訊整理在一個漂亮、容易閱讀的頁面。</p></div>
+        <div class="badge" data-i18n="heroBadge">PERSONAL • PRIVATE • PORTABLE</div>
+      </div>
+      <div class="grid">
+        <div class="card third"><h3><span class="icon">🩸</span><span data-i18n="blood">血型</span></h3>
+          <div class="field"><select id="bloodType"><option value="">—</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option data-i18n="unknown">不確定</option></select></div>
+        </div>
+        <div class="card third"><h3><span class="icon">⚠️</span><span data-i18n="allergy">重要過敏</span></h3>
+          <div id="allergySummary" class="chips"><span class="chip" data-i18n="notFilled">尚未填寫</span></div>
+        </div>
+        <div class="card third"><h3><span class="icon">💊</span><span data-i18n="currentMeds">目前用藥</span></h3>
+          <div id="medSummary" class="chips"><span class="chip" data-i18n="notFilled">尚未填寫</span></div>
+        </div>
+        <div class="card full"><h3><span class="icon">✨</span><span data-i18n="quick">快速提醒</span></h3>
+          <div class="help" data-i18n="quickText">如果你把這份資料提供給醫療人員，請確認內容是最新的。這個靜態網站不是醫療診斷工具。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="basic" class="section">
+      <div class="card full"><h3><span class="icon">👤</span><span data-i18n="basicTitle">基本資料與個人史</span></h3>
+        <div class="form-grid">
+          <div class="field"><label data-i18n="name">姓名</label><input id="name" placeholder="Your name"></div>
+          <div class="field"><label data-i18n="dob">出生日期</label><input id="dob" type="date"></div>
+          <div class="field"><label data-i18n="sex">生理性別</label><select id="sex"><option></option><option>Female</option><option>Male</option><option>Other / Prefer not to say</option></select></div>
+          <div class="field"><label data-i18n="nationality">國籍</label><input id="nationality"></div>
+          <div class="field"><label data-i18n="languageSpoken">主要語言</label><input id="languageSpoken"></div>
+          <div class="field"><label data-i18n="emergency">緊急聯絡人</label><input id="emergency" value="周誠安"></div>
+          <div class="field"><label data-i18n="phone">緊急聯絡電話</label><input id="phone"></div>
+          <div class="field"><label data-i18n="address">居住地區（可只填城市）</label><input id="address"></div>
+          <div class="field full"><label data-i18n="personalHistory">個人史／生活習慣</label><textarea id="personalHistory" placeholder="例如：重要生活習慣、工作/學習環境、運動、旅行史等"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="history" class="section">
+      <div class="grid">
+        <div class="card"><h3><span class="icon">🩺</span><span data-i18n="diseaseTitle">疾病史</span></h3>
+          <div class="field"><label data-i18n="diseaseLabel">曾診斷過的疾病／重大病史</label><textarea id="diseaseHistory"></textarea></div>
+        </div>
+        <div class="card"><h3><span class="icon">⚠️</span><span data-i18n="allergyTitle">過敏史</span></h3>
+          <div class="field"><label data-i18n="allergyLabel">藥物、食物、環境或其他過敏</label><textarea id="allergies"></textarea></div>
+        </div>
+        <div class="card"><h3><span class="icon">💉</span><span data-i18n="vaccineTitle">疫苗／預防接種史</span></h3>
+          <div class="field"><label data-i18n="vaccineLabel">疫苗名稱、日期、劑次</label><textarea id="vaccines"></textarea></div>
+        </div>
+        <div class="card"><h3><span class="icon">🧠</span><span data-i18n="mentalTitle">其他重要醫療資訊</span></h3>
+          <div class="field"><label data-i18n="importantLabel">例如植入物、慢性狀況、特殊注意事項</label><textarea id="important"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="surgery" class="section">
+      <div class="card full"><h3><span class="icon">🏥</span><span data-i18n="surgeryTitle">手術／住院史</span></h3>
+        <div class="form-grid">
+          <div class="field"><label data-i18n="surgeryDate">日期</label><input id="surgeryDate" type="date"></div>
+          <div class="field"><label data-i18n="surgeryName">手術／住院項目</label><input id="surgeryName"></div>
+          <div class="field"><label data-i18n="hospital">醫院／機構</label><input id="hospital"></div>
+          <div class="field"><label data-i18n="result">結果／備註</label><input id="surgeryResult"></div>
+          <div class="field full"><label data-i18n="surgeryOther">其他手術或住院紀錄</label><textarea id="surgeryOther"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="meds" class="section">
+      <div class="card full"><h3><span class="icon">💊</span><span data-i18n="medTitle">用藥史</span></h3>
+        <div class="form-grid">
+          <div class="field"><label data-i18n="drug">藥品名稱</label><input id="drug"></div>
+          <div class="field"><label data-i18n="dose">劑量／頻率</label><input id="dose"></div>
+          <div class="field"><label data-i18n="reason">使用原因</label><input id="reason"></div>
+          <div class="field"><label data-i18n="start">開始／停止日期</label><input id="start"></div>
+          <div class="field full"><label data-i18n="medOther">目前及過去使用的其他藥物、保健品</label><textarea id="medOther"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="family" class="section">
+      <div class="card full"><h3><span class="icon">👨‍👩‍👧</span><span data-i18n="familyTitle">家族病史</span></h3>
+        <div class="form-grid">
+          <div class="field full"><label data-i18n="familyLabel">父母、兄弟姊妹、祖父母等的重大疾病</label><textarea id="familyHistory" placeholder="可寫：親屬關係／疾病／大約發病年齡／其他已知資訊"></textarea></div>
+          <div class="field full"><label data-i18n="hereditary">已知遺傳疾病／家族性疾病</label><textarea id="hereditary"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="extra" class="section">
+      <div class="grid">
+        <div class="card"><h3><span class="icon">📏</span><span data-i18n="vitals">近期身體資料</span></h3>
+          <div class="form-grid">
+            <div class="field"><label data-i18n="height">身高</label><input id="height" placeholder="cm"></div>
+            <div class="field"><label data-i18n="weight">體重</label><input id="weight" placeholder="kg"></div>
+            <div class="field"><label data-i18n="bp">血壓（若有）</label><input id="bp"></div>
+            <div class="field"><label data-i18n="pulse">脈搏（若有）</label><input id="pulse"></div>
+          </div>
+        </div>
+        <div class="card"><h3><span class="icon">📝</span><span data-i18n="notes">其他備註</span></h3>
+          <textarea id="notes" data-placeholder="notesPlaceholder" placeholder="任何希望醫療人員知道的重要資訊"></textarea>
+        </div>
+        <div class="card full"><h3><span class="icon">🔐</span><span data-i18n="privacyTitle">隱私提醒</span></h3>
+          <div class="help" data-i18n="privacyText">這個版本是純前端靜態網站：沒有後端、沒有雲端資料庫。若你要把真正的病歷放進去，請特別注意裝置安全、檔案加密與醫療隱私法規；不要把敏感病歷放到公開網站或公開 GitHub 儲存庫。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">Pink Medical Passport • Static HTML / CSS / JavaScript • <span data-i18n="notMedical">非醫療診斷工具</span></div>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const translations={
+zh:{
+title:"我的多國語言電子病歷",subtitle:"一份可以隨身攜帶的 Personal Medical Passport",print:"🖨 列印",
+navOverview:"總覽",navBasic:"基本資料",navHistory:"病史與過敏",navSurgery:"手術史",navMeds:"用藥史",navFamily:"家族史",navExtra:"其他醫療資訊",
+privacy:"資料只存在此頁面，除非你自行匯出或儲存。",heroTitle:"♡ Your Health, Your Story.",heroText:"把重要醫療資訊整理在一個漂亮、容易閱讀的頁面。",heroBadge:"PERSONAL • PRIVATE • PORTABLE",
+blood:"血型",allergy:"重要過敏",currentMeds:"目前用藥",notFilled:"尚未填寫",unknown:"不確定",quick:"快速提醒",quickText:"如果你把這份資料提供給醫療人員，請確認內容是最新的。這個靜態網站不是醫療診斷工具。",
+basicTitle:"基本資料與個人史",name:"姓名",dob:"出生日期",sex:"生理性別",nationality:"國籍",languageSpoken:"主要語言",emergency:"緊急聯絡人",phone:"緊急聯絡電話",address:"居住地區（可只填城市）",personalHistory:"個人史／生活習慣",
+diseaseTitle:"疾病史",diseaseLabel:"曾診斷過的疾病／重大病史",allergyTitle:"過敏史",allergyLabel:"藥物、食物、環境或其他過敏",vaccineTitle:"疫苗／預防接種史",vaccineLabel:"疫苗名稱、日期、劑次",mentalTitle:"其他重要醫療資訊",importantLabel:"例如植入物、慢性狀況、特殊注意事項",
+surgeryTitle:"手術／住院史",surgeryDate:"日期",surgeryName:"手術／住院項目",hospital:"醫院／機構",result:"結果／備註",surgeryOther:"其他手術或住院紀錄",
+medTitle:"用藥史",drug:"藥品名稱",dose:"劑量／頻率",reason:"使用原因",start:"開始／停止日期",medOther:"目前及過去使用的其他藥物、保健品",
+familyTitle:"家族病史",familyLabel:"父母、兄弟姊妹、祖父母等的重大疾病",hereditary:"已知遺傳疾病／家族性疾病",
+vitals:"近期身體資料",height:"身高",weight:"體重",bp:"血壓（若有）",pulse:"脈搏（若有）",notes:"其他備註",notesPlaceholder:"任何希望醫療人員知道的重要資訊",privacyTitle:"隱私提醒",privacyText:"這個版本是純前端靜態網站：沒有後端、沒有雲端資料庫。若你要把真正的病歷放進去，請特別注意裝置安全、檔案加密與醫療隱私法規；不要把敏感病歷放到公開網站或公開 GitHub 儲存庫。",notMedical:"非醫療診斷工具"
+},
+en:{
+title:"My Multilingual Medical Record",subtitle:"A portable Personal Medical Passport",print:"🖨 Print",navOverview:"Overview",navBasic:"Basic Info",navHistory:"History & Allergies",navSurgery:"Surgery",navMeds:"Medications",navFamily:"Family History",navExtra:"Other Medical Info",privacy:"Your data stays on this page unless you export or save it.",heroTitle:"♡ Your Health, Your Story.",heroText:"Keep important medical information organized in one beautiful, readable page.",heroBadge:"PERSONAL • PRIVATE • PORTABLE",blood:"Blood Type",allergy:"Important Allergies",currentMeds:"Current Medications",notFilled:"Not filled",unknown:"Unknown",quick:"Quick Reminder",quickText:"If you share this information with healthcare professionals, make sure it is up to date. This static website is not a diagnostic tool.",
+basicTitle:"Basic Information & Personal History",name:"Full Name",dob:"Date of Birth",sex:"Sex",nationality:"Nationality",languageSpoken:"Primary Language",emergency:"Emergency Contact",phone:"Emergency Phone",address:"Location (city only is fine)",personalHistory:"Personal History / Lifestyle",
+diseaseTitle:"Medical History",diseaseLabel:"Diagnosed conditions / major medical history",allergyTitle:"Allergy History",allergyLabel:"Drug, food, environmental or other allergies",vaccineTitle:"Vaccination History",vaccineLabel:"Vaccine, date and dose",mentalTitle:"Other Important Medical Information",importantLabel:"Implants, chronic conditions, special precautions, etc.",
+surgeryTitle:"Surgery / Hospitalization History",surgeryDate:"Date",surgeryName:"Procedure / Hospitalization",hospital:"Hospital / Facility",result:"Outcome / Notes",surgeryOther:"Other surgeries or hospitalizations",
+medTitle:"Medication History",drug:"Medication Name",dose:"Dose / Frequency",reason:"Reason for Use",start:"Start / Stop Date",medOther:"Other current or past medicines and supplements",
+familyTitle:"Family Medical History",familyLabel:"Major conditions in parents, siblings, grandparents, etc.",hereditary:"Known hereditary / familial conditions",
+vitals:"Recent Measurements",height:"Height",weight:"Weight",bp:"Blood Pressure (if known)",pulse:"Pulse (if known)",notes:"Other Notes",notesPlaceholder:"Anything important for healthcare professionals to know",privacyTitle:"Privacy Reminder",privacyText:"This version is a front-end static website: no backend and no cloud database. If you enter real medical records, pay close attention to device security, encryption and medical privacy laws; never place sensitive records on a public website or public GitHub repository.",notMedical:"Not a diagnostic tool"
+},
+ko:{
+title:"나의 다국어 전자 의료 기록",subtitle:"휴대용 Personal Medical Passport",print:"🖨 인쇄",navOverview:"개요",navBasic:"기본 정보",navHistory:"병력 및 알레르기",navSurgery:"수술력",navMeds:"복용약",navFamily:"가족력",navExtra:"기타 의료 정보",privacy:"직접 내보내거나 저장하지 않는 한 데이터는 이 페이지에만 있습니다.",heroTitle:"♡ Your Health, Your Story.",heroText:"중요한 의료 정보를 아름답고 읽기 쉬운 한 페이지에 정리하세요.",heroBadge:"PERSONAL • PRIVATE • PORTABLE",blood:"혈액형",allergy:"중요 알레르기",currentMeds:"현재 복용약",notFilled:"입력되지 않음",unknown:"모름",quick:"알림",quickText:"의료진에게 이 정보를 보여줄 경우 최신 정보인지 확인하세요. 이 정적 웹사이트는 진단 도구가 아닙니다.",
+basicTitle:"기본 정보 및 개인력",name:"이름",dob:"생년월일",sex:"성별",nationality:"국적",languageSpoken:"주요 언어",emergency:"비상 연락처",phone:"비상 전화번호",address:"거주 지역(도시만 입력 가능)",personalHistory:"개인력 / 생활 습관",
+diseaseTitle:"질병력",diseaseLabel:"진단받은 질환 / 주요 병력",allergyTitle:"알레르기력",allergyLabel:"약물, 음식, 환경 또는 기타 알레르기",vaccineTitle:"예방접종력",vaccineLabel:"백신명, 날짜, 접종 횟수",mentalTitle:"기타 중요 의료 정보",importantLabel:"삽입물, 만성 질환, 특별 주의사항 등",
+surgeryTitle:"수술 / 입원력",surgeryDate:"날짜",surgeryName:"수술 / 입원 내용",hospital:"병원 / 기관",result:"결과 / 메모",surgeryOther:"기타 수술 또는 입원 기록",
+medTitle:"약물 복용력",drug:"약 이름",dose:"용량 / 횟수",reason:"복용 이유",start:"시작 / 중단 날짜",medOther:"현재 및 과거 복용 약물·보충제",
+familyTitle:"가족력",familyLabel:"부모, 형제자매, 조부모 등의 주요 질환",hereditary:"알려진 유전성 / 가족성 질환",
+vitals:"최근 신체 정보",height:"키",weight:"체중",bp:"혈압(알 경우)",pulse:"맥박(알 경우)",notes:"기타 메모",notesPlaceholder:"의료진에게 알려야 할 중요한 정보",privacyTitle:"개인정보 보호 안내",privacyText:"이 버전은 백엔드와 클라우드 데이터베이스가 없는 정적 웹사이트입니다. 실제 의료 기록을 입력한다면 기기 보안, 암호화 및 의료 개인정보 보호법을 주의하세요. 민감한 기록을 공개 웹사이트나 공개 GitHub 저장소에 올리지 마세요.",notMedical:"진단 도구가 아님"
+},
+ja:{
+title:"私の多言語電子カルテ",subtitle:"持ち歩ける Personal Medical Passport",print:"🖨 印刷",navOverview:"概要",navBasic:"基本情報",navHistory:"病歴・アレルギー",navSurgery:"手術歴",navMeds:"服薬歴",navFamily:"家族歴",navExtra:"その他の医療情報",privacy:"自分で書き出したり保存したりしない限り、データはこのページ内にあります。",heroTitle:"♡ Your Health, Your Story.",heroText:"大切な医療情報を、美しく読みやすいページに整理します。",heroBadge:"PERSONAL • PRIVATE • PORTABLE",blood:"血液型",allergy:"重要なアレルギー",currentMeds:"現在の服薬",notFilled:"未入力",unknown:"不明",quick:"注意",quickText:"医療関係者にこの情報を見せる場合は、最新の内容であることを確認してください。この静的サイトは診断ツールではありません。",
+basicTitle:"基本情報・個人歴",name:"氏名",dob:"生年月日",sex:"性別",nationality:"国籍",languageSpoken:"主な言語",emergency:"緊急連絡先",phone:"緊急電話番号",address:"居住地域（都市のみでも可）",personalHistory:"個人歴・生活習慣",
+diseaseTitle:"既往歴",diseaseLabel:"診断された病気・主な既往歴",allergyTitle:"アレルギー歴",allergyLabel:"薬・食物・環境などのアレルギー",vaccineTitle:"予防接種歴",vaccineLabel:"ワクチン名・日付・回数",mentalTitle:"その他の重要な医療情報",importantLabel:"インプラント、慢性疾患、特別な注意事項など",
+surgeryTitle:"手術・入院歴",surgeryDate:"日付",surgeryName:"手術・入院内容",hospital:"病院・施設",result:"結果・メモ",surgeryOther:"その他の手術・入院記録",
+medTitle:"服薬歴",drug:"薬剤名",dose:"用量・頻度",reason:"使用理由",start:"開始・中止日",medOther:"現在・過去に使用した薬やサプリメント",
+familyTitle:"家族歴",familyLabel:"両親、兄弟姉妹、祖父母などの主な病気",hereditary:"既知の遺伝性・家族性疾患",
+vitals:"最近の身体情報",height:"身長",weight:"体重",bp:"血圧（分かれば）",pulse:"脈拍（分かれば）",notes:"その他のメモ",notesPlaceholder:"医療関係者に伝えたい重要な情報",privacyTitle:"プライバシーについて",privacyText:"このバージョンはバックエンドやクラウドデータベースを持たない静的サイトです。実際の医療記録を入力する場合は、端末の安全性、暗号化、医療プライバシー法に十分注意してください。公開サイトや公開GitHubリポジトリに機密情報を置かないでください。",notMedical:"診断ツールではありません"
+},
+vi:{
+title:"Hồ sơ bệnh án điện tử đa ngôn ngữ",subtitle:"Hộ chiếu Sức khỏe Cá nhân",print:"🖨 In",navOverview:"Tổng quan",navBasic:"Thông tin cơ bản",navHistory:"Tiền sử & Dị ứng",navSurgery:"Tiền sử phẫu thuật",navMeds:"Thuốc đang dùng",navFamily:"Tiền sử gia đình",navExtra:"Thông tin y tế khác",privacy:"Dữ liệu chỉ nằm trên trang này trừ khi bạn tự xuất hoặc lưu.",heroTitle:"♡ Your Health, Your Story.",heroText:"Sắp xếp thông tin y tế quan trọng trong một trang đẹp và dễ đọc.",heroBadge:"PERSONAL • PRIVATE • PORTABLE",blood:"Nhóm máu",allergy:"Dị ứng quan trọng",currentMeds:"Thuốc hiện dùng",notFilled:"Chưa nhập",unknown:"Không rõ",quick:"Lưu ý",quickText:"Nếu cung cấp thông tin này cho nhân viên y tế, hãy đảm bảo thông tin được cập nhật. Trang web tĩnh này không phải công cụ chẩn đoán.",
+basicTitle:"Thông tin cơ bản & Tiền sử cá nhân",name:"Họ và tên",dob:"Ngày sinh",sex:"Giới tính",nationality:"Quốc tịch",languageSpoken:"Ngôn ngữ chính",emergency:"Người liên hệ khẩn cấp",phone:"Điện thoại khẩn cấp",address:"Khu vực sinh sống (có thể chỉ ghi thành phố)",personalHistory:"Tiền sử cá nhân / Lối sống",
+diseaseTitle:"Tiền sử bệnh",diseaseLabel:"Bệnh đã được chẩn đoán / bệnh sử quan trọng",allergyTitle:"Tiền sử dị ứng",allergyLabel:"Dị ứng thuốc, thực phẩm, môi trường hoặc khác",vaccineTitle:"Lịch sử tiêm chủng",vaccineLabel:"Tên vắc-xin, ngày và liều",mentalTitle:"Thông tin y tế quan trọng khác",importantLabel:"Thiết bị cấy ghép, bệnh mạn tính, lưu ý đặc biệt, v.v.",
+surgeryTitle:"Tiền sử phẫu thuật / nhập viện",surgeryDate:"Ngày",surgeryName:"Phẫu thuật / Nhập viện",hospital:"Bệnh viện / Cơ sở",result:"Kết quả / Ghi chú",surgeryOther:"Các lần phẫu thuật hoặc nhập viện khác",
+medTitle:"Tiền sử dùng thuốc",drug:"Tên thuốc",dose:"Liều / Tần suất",reason:"Lý do sử dụng",start:"Ngày bắt đầu / ngừng",medOther:"Thuốc và thực phẩm bổ sung hiện tại hoặc trước đây",
+familyTitle:"Tiền sử gia đình",familyLabel:"Bệnh quan trọng ở cha mẹ, anh chị em, ông bà...",hereditary:"Bệnh di truyền / bệnh gia đình đã biết",
+vitals:"Thông tin cơ thể gần đây",height:"Chiều cao",weight:"Cân nặng",bp:"Huyết áp (nếu biết)",pulse:"Mạch (nếu biết)",notes:"Ghi chú khác",notesPlaceholder:"Thông tin quan trọng muốn nhân viên y tế biết",privacyTitle:"Lưu ý về quyền riêng tư",privacyText:"Phiên bản này là website tĩnh chạy ở phía trước: không có máy chủ và không có cơ sở dữ liệu đám mây. Nếu nhập hồ sơ y tế thật, hãy chú ý đến bảo mật thiết bị, mã hóa và luật về quyền riêng tư y tế; không đưa hồ sơ nhạy cảm lên website công khai hoặc kho GitHub công khai.",notMedical:"Không phải công cụ chẩn đoán"
+}};
+
+function showSection(id,btn){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function changeLanguage(lang){
+ const t=translations[lang]||translations.zh;
+ document.querySelectorAll('[data-i18n]').forEach(el=>{
+   const key=el.dataset.i18n;if(t[key]!==undefined)el.textContent=t[key];
+ });
+ document.querySelectorAll('[data-placeholder]').forEach(el=>{
+   const key=el.dataset.placeholder;if(t[key]!==undefined)el.placeholder=t[key];
+ });
+ document.documentElement.lang=lang==="zh"?"zh-Hant":lang;
+ localStorage.setItem("pm_lang",lang);
+}
+function updateSummary(){
+ const a=document.getElementById("allergies").value.trim();
+ const m=document.getElementById("drug").value.trim();
+ document.getElementById("allergySummary").innerHTML=a?`<span class="chip">${escapeHtml(a.slice(0,70))}</span>`:`<span class="chip">${translations[document.getElementById("language").value].notFilled}</span>`;
+ document.getElementById("medSummary").innerHTML=m?`<span class="chip">${escapeHtml(m.slice(0,70))}</span>`:`<span class="chip">${translations[document.getElementById("language").value].notFilled}</span>`;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+document.querySelectorAll("input,textarea,select").forEach(el=>el.addEventListener("input",updateSummary));
+document.getElementById("language").value=localStorage.getItem("pm_lang")||"zh";
+changeLanguage(document.getElementById("language").value);
+updateSummary();
+</script>
+</body>
+</html>
